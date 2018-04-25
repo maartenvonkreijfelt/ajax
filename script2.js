@@ -4,12 +4,16 @@ if (window.XMLHttpRequest) {
 } else {
 	request = new ActiveXObject("Microsoft.XMLHTTP");
 }
-request.open('GET', 'data.xml');
+request.open('GET', 'data.json');
 request.onreadystatechange = function() {
 	if ((request.readyState===4) && (request.status===200)) {
-        //console.log(request.responseXML)
-        console.log(request.responseXML.getElementsByTagName('name')[1].childNodes[0]);
-		//console.log(request.responseXML.getElementsByTagName('name')[1]);
-    }
+		var items = JSON.parse(request.responseText);
+		var output = '<ul>';
+		for (var key in items) {
+			output += '<li>' + items[key].name + '</li>';
+		}
+		output += '</ul>';
+		document.getElementById('update').innerHTML = output;
+	}
 }
 request.send();
